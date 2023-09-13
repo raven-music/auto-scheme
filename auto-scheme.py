@@ -1,5 +1,6 @@
 import random
 import csv
+import sys
 from datetime import datetime, timedelta
 from PIL import Image, ImageDraw, ImageFont
 
@@ -33,7 +34,7 @@ males = []
 females = []
 
 # Load names from the CSV file
-with open('names.csv', mode='r', newline='') as file:
+with open(sys.argv[1] if len(sys.argv) > 1 else 'sample.csv', mode='r', newline='') as file:
     reader = csv.reader(file)
     for row in reader:
         name, gender = row
@@ -45,7 +46,7 @@ with open('names.csv', mode='r', newline='') as file:
 # Determine the year and week number you want to start from
 start_year = 2023  # Change this to the desired start year
 print("Which week do want to start on?")
-start_week = int(input("Enter start week: "))     # Change this to the desired start week
+start_week = int(input("Enter start week [default: 1] ") or "1")     # Change this to the desired start week
 
 # Determine the number of weeks you want to schedule
 num_weeks = 4  # Change this to the desired number of weeks
