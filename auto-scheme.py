@@ -44,7 +44,8 @@ with open('names.csv', mode='r', newline='') as file:
 
 # Determine the year and week number you want to start from
 start_year = 2023  # Change this to the desired start year
-start_week = 1     # Change this to the desired start week
+print("Which week do want to start on?")
+start_week = int(input("Enter start week: "))     # Change this to the desired start week
 
 # Determine the number of weeks you want to schedule
 num_weeks = 4  # Change this to the desired number of weeks
@@ -83,8 +84,8 @@ for assignments in schedule:
     print(f"Saturday: {saturday_pair[0]} and {saturday_pair[1]}\n")
 
 # Create an image
-image_width = 800
-image_height = 600
+image_width = 400
+image_height = 700
 image = Image.new("RGB", (image_width, image_height), (255, 255, 255))
 draw = ImageDraw.Draw(image)
 
@@ -109,16 +110,30 @@ for assignments in schedule:
     saturday_date = start_date + timedelta(days=(5 - start_date.weekday()) % 7)  # Find the next Saturday
 
     # Draw the week number and date range using the bold font
-    week_text = f"Week {week}:"
+    week_text = f"Semana {week}:"
     draw.text((x_pos, y_pos), week_text, fill=text_color, font=bold_font)
 
     # Increment the y position
     y_pos += 30
 
-    # Draw Tuesday and Saturday pairs with their respective dates
-    draw.text((x_pos, y_pos), f"Tuesday ({tuesday_date.strftime('%Y-%m-%d')}): {tuesday_pair[0]} and {tuesday_pair[1]}", fill=text_color, font=font)
+    # Assign jobs and draw names with their respective jobs for Tuesday
+    job1, job2 = "Som", "Zoom"
+    left_name, right_name = tuesday_pair[0], tuesday_pair[1]
+
+    # Draw Tuesday assignments
+    draw.text((x_pos, y_pos), f"Terça-feira ({tuesday_date.strftime('%Y-%m-%d')}):", fill=text_color, font=font)
     y_pos += 30
-    draw.text((x_pos, y_pos), f"Saturday ({saturday_date.strftime('%Y-%m-%d')}): {saturday_pair[0]} and {saturday_pair[1]}", fill=text_color, font=font)
+    draw.text((x_pos + 20, y_pos), f"Som: {left_name}, Zoom: {right_name}", fill=text_color, font=font)
+    y_pos += 30
+
+    # Assign jobs and draw names with their respective jobs for Saturday
+    jom, job2 = "Som", "Zoom"
+    left_name, right_name = saturday_pair[0], saturday_pair[1]
+
+    # Draw Saturday assignments
+    draw.text((x_pos, y_pos), f"Sábado ({saturday_date.strftime('%Y-%m-%d')}):", fill=text_color, font=font)
+    y_pos += 30
+    draw.text((x_pos + 20, y_pos), f"Som: {left_name}, Zoom: {right_name}", fill=text_color, font=font)
     y_pos += 30  # Increase the vertical space between weeks
 
 # Save the image as a JPG file
