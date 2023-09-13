@@ -1,10 +1,11 @@
 import random
 import csv
+import sys
 from datetime import datetime, timedelta
 from PIL import Image, ImageDraw, ImageFont
 
 # Define a bold font (you may need to specify the path to a bold font file)
-bold_font = ImageFont.truetype("arialbd.ttf", size=20)  # Change the font file and size as needed
+bold_font = ImageFont.truetype("opensans/fonts/ttf/OpenSans-Bold.ttf", size=20)  # Change the font file and size as needed
 
 # Function to get the start date of a week based on the week number and year
 def start_date_of_week(year, week_number):
@@ -33,7 +34,7 @@ males = []
 females = []
 
 # Load names from the CSV file
-with open('names.csv', mode='r', newline='') as file:
+with open(sys.argv[1] if len(sys.argv) > 1 else 'sample.csv', mode='r', newline='') as file:
     reader = csv.reader(file)
     for row in reader:
         name, gender = row
@@ -45,7 +46,7 @@ with open('names.csv', mode='r', newline='') as file:
 # Determine the year and week number you want to start from
 start_year = 2023  # Change this to the desired start year
 print("Which week do want to start on?")
-start_week = int(input("Enter start week: "))     # Change this to the desired start week
+start_week = int(input("Enter start week [default: 1] ") or "1")     # Change this to the desired start week
 
 # Determine the number of weeks you want to schedule
 num_weeks = 4  # Change this to the desired number of weeks
@@ -90,7 +91,7 @@ image = Image.new("RGB", (image_width, image_height), (255, 255, 255))
 draw = ImageDraw.Draw(image)
 
 # Define fonts and text colors
-font = ImageFont.truetype("arial.ttf", size=20)
+font = ImageFont.truetype("opensans/fonts/ttf/OpenSans-Regular.ttf", size=20)
 text_color = (0, 0, 0)
 
 # Define the position to start drawing the schedule
