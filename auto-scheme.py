@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from PIL import Image, ImageDraw, ImageFont
 
 # Define a bold font (you may need to specify the path to a bold font file)
-bold_font = ImageFont.truetype("arialbd.ttf", size=20)  # Change the font file and size as needed
+bold_font = ImageFont.truetype("opensans/fonts/ttf/OpenSans-Bold.ttf", size=20)  # Change the font file and size as needed
 
 # Function to get the start date of a week based on the week number and year
 def start_date_of_week(year, week_number):
@@ -90,7 +90,7 @@ image = Image.new("RGB", (image_width, image_height), (255, 255, 255))
 draw = ImageDraw.Draw(image)
 
 # Define fonts and text colors
-font = ImageFont.truetype("arial.ttf", size=20)
+font = ImageFont.truetype("opensans/fonts/ttf/OpenSans-Regular.ttf", size=20)
 text_color = (0, 0, 0)
 
 # Define the position to start drawing the schedule
