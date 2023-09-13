@@ -1,6 +1,10 @@
 import random
 import csv
 from datetime import datetime, timedelta
+from PIL import Image, ImageDraw, ImageFont
+
+# Define a bold font (you may need to specify the path to a bold font file)
+bold_font = ImageFont.truetype("arialbd.ttf", size=20)  # Change the font file and size as needed
 
 # Function to get the start date of a week based on the week number and year
 def start_date_of_week(year, week_number):
@@ -77,3 +81,48 @@ for assignments in schedule:
     print(f"Week {week} ({start_date} to {end_date}):")
     print(f"Tuesday: {tuesday_pair[0]} and {tuesday_pair[1]}")
     print(f"Saturday: {saturday_pair[0]} and {saturday_pair[1]}\n")
+
+# Create an image
+image_width = 800
+image_height = 600
+image = Image.new("RGB", (image_width, image_height), (255, 255, 255))
+draw = ImageDraw.Draw(image)
+
+# Define fonts and text colors
+font = ImageFont.truetype("arial.ttf", size=20)
+text_color = (0, 0, 0)
+
+# Define the position to start drawing the schedule
+x_pos = 50
+y_pos = 50
+
+# Loop through the schedule and draw it on the image
+for assignments in schedule:
+    week = assignments["Week"]
+    start_date = assignments["Start Date"]
+    end_date = assignments["End Date"]
+    tuesday_pair = assignments['Tuesday']
+    saturday_pair = assignments['Saturday']
+
+    # Calculate the Tuesday and Saturday dates
+    tuesday_date = start_date + timedelta(days=(1 - start_date.weekday()) % 7)  # Find the next Tuesday
+    saturday_date = start_date + timedelta(days=(5 - start_date.weekday()) % 7)  # Find the next Saturday
+
+    # Draw the week number and date range using the bold font
+    week_text = f"Week {week}:"
+    draw.text((x_pos, y_pos), week_text, fill=text_color, font=bold_font)
+
+    # Increment the y position
+    y_pos += 30
+
+    # Draw Tuesday and Saturday pairs with their respective dates
+    draw.text((x_pos, y_pos), f"Tuesday ({tuesday_date.strftime('%Y-%m-%d')}): {tuesday_pair[0]} and {tuesday_pair[1]}", fill=text_color, font=font)
+    y_pos += 30
+    draw.text((x_pos, y_pos), f"Saturday ({saturday_date.strftime('%Y-%m-%d')}): {saturday_pair[0]} and {saturday_pair[1]}", fill=text_color, font=font)
+    y_pos += 30  # Increase the vertical space between weeks
+
+# Save the image as a JPG file
+image.save("schedule.jpg")
+
+# Close the image
+image.close()
