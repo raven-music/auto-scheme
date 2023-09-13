@@ -4,8 +4,6 @@ import sys
 from datetime import datetime, timedelta
 from PIL import Image, ImageDraw, ImageFont
 
-# Define a bold font (you may need to specify the path to a bold font file)
-bold_font = ImageFont.truetype("opensans/fonts/ttf/OpenSans-Bold.ttf", size=20)  # Change the font file and size as needed
 
 # Function to get the start date of a week based on the week number and year
 def start_date_of_week(year, week_number):
@@ -84,15 +82,37 @@ for assignments in schedule:
     print(f"Tuesday: {tuesday_pair[0]} and {tuesday_pair[1]}")
     print(f"Saturday: {saturday_pair[0]} and {saturday_pair[1]}\n")
 
+# Define fonts and text colors  
+font = ImageFont.truetype("opensans/fonts/ttf/OpenSans-Regular.ttf", size=20)
+bold_font = ImageFont.truetype("opensans/fonts/ttf/OpenSans-Bold.ttf", size=20)
+text_color = (0, 0, 0)
+
+# Calculate the required image height based on the number of weeks and text size
+text_height = 50  # Adjust this based on your font size and line spacing
+image_height = int((1*(num_weeks * 3) * text_height) + 100)  # 2 lines per week (Tue and Sat), plus some extra space
+
 # Create an image
-image_width = 400
-image_height = 700
+image_width = 400  # You can set an initial width, but it will be adjusted later
+
+# Calculate the maximum text width
+max_text_width = 0
+
+for assignments in schedule:
+    tuesday_pair = assignments['Tuesday']
+    saturday_pair = assignments['Saturday']
+    left_name, right_name = tuesday_pair[0], tuesday_pair[1]
+    tuesday_text = f"Som: {left_name}, Zoom: {right_name}"
+    tuesday_text_width = font.getlength(tuesday_text)
+    print(tuesday_text_width)
+    max_text_width = max(max_text_width, tuesday_text_width)
+
+# Add extra space to the maximum text width for padding
+image_width = int(max_text_width + 130)  # Add some extra space
+
+# Create an image with the calculated dimensions
 image = Image.new("RGB", (image_width, image_height), (255, 255, 255))
 draw = ImageDraw.Draw(image)
-
-# Define fonts and text colors
-font = ImageFont.truetype("opensans/fonts/ttf/OpenSans-Regular.ttf", size=20)
-text_color = (0, 0, 0)
+print(image_height, image_width)
 
 # Define the position to start drawing the schedule
 x_pos = 50
