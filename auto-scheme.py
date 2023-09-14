@@ -18,14 +18,13 @@ def end_date_of_week(year, week_number):
 # Function to create pairs of two people while ensuring everyone gets a turn
 def create_pairs(names):
     random.shuffle(names)
-    pairs = []
     
-    # Determine the number of pairs needed
-    num_pairs = len(names) // 2
+    num_people = len(names)
+    num_pairs = num_people // 2
     
-    for i in range(num_pairs):
-        pair = [names[i], names[num_pairs + i]]
-        pairs.append(pair)
+    pairs = [[names[i], names[i + num_pairs]] for i in range(num_pairs)]    
+    if num_people % 2 == 1:
+        pairs.append([names[-1], names[0]])
     
     return pairs
 
@@ -54,6 +53,7 @@ for font_name in ["OpenSans-Regular.ttf", "OpenSans-Bold.ttf"]:
 # Initialize lists to store names by gender
 males = []
 females = []
+people_count = 0
 
 # Load names from the CSV file
 with open(sys.argv[1] if len(sys.argv) > 1 else 'sample.csv', mode='r', newline='') as file:
@@ -64,11 +64,13 @@ with open(sys.argv[1] if len(sys.argv) > 1 else 'sample.csv', mode='r', newline=
             males.append(name)
         elif gender == 'F':
             females.append(name)
+        people_count += 1
 
-# Determine the year and week number you want to start from
-start_year = 2023  # Change this to the desired start year
+current_date = datetime.now()
+next_week_start = current_date + timedelta(days=(7 - current_date.weekday()) % 7)
+start_year = next_week_start.year # 2023
 print("Which week do want to start on?")
-start_week = int(input("Enter start week [default: 1] ") or "1")     # Change this to the desired start week
+start_week = int(input("Enter start week [default: next week] ") or next_week_start.isocalendar()[1])     # Change this to the desired start week
 
 # Determine the number of weeks you want to schedule
 num_weeks = 4  # Change this to the desired number of weeks
@@ -169,7 +171,7 @@ for assignments in schedule:
     y_pos += 30
 
     # Assign jobs and draw names with their respective jobs for Saturday
-    jom, job2 = "Som", "Zoom"
+    job, job2 = "Som", "Zoom"
     left_name, right_name = saturday_pair[0], saturday_pair[1]
 
     # Draw Saturday assignments
