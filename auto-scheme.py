@@ -99,11 +99,9 @@ max_text_width = 0
 
 for assignments in schedule:
     tuesday_pair = assignments['Tuesday']
-    saturday_pair = assignments['Saturday']
     left_name, right_name = tuesday_pair[0], tuesday_pair[1]
     tuesday_text = f"Som: {left_name}, Zoom: {right_name}"
     tuesday_text_width = font.getlength(tuesday_text)
-    print(tuesday_text_width)
     max_text_width = max(max_text_width, tuesday_text_width)
 
 # Add extra space to the maximum text width for padding
@@ -112,7 +110,6 @@ image_width = int(max_text_width + 130)  # Add some extra space
 # Create an image with the calculated dimensions
 image = Image.new("RGB", (image_width, image_height), (255, 255, 255))
 draw = ImageDraw.Draw(image)
-print(image_height, image_width)
 
 # Define the position to start drawing the schedule
 x_pos = 50
