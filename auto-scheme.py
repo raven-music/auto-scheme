@@ -1,6 +1,8 @@
 import random
 import csv
 import sys
+import requests
+import os
 from datetime import datetime, timedelta
 from PIL import Image, ImageDraw, ImageFont
 
@@ -26,6 +28,28 @@ def create_pairs(names):
         pairs.append(pair)
     
     return pairs
+
+# Create the 'fonts' directory if it doesn't exist
+font_dir = "./fonts/"
+os.makedirs(font_dir, exist_ok=True)
+
+font_url = "https://github.com/googlefonts/opensans/raw/main/fonts/ttf"
+
+for font_name in ["OpenSans-Regular.ttf", "OpenSans-Bold.ttf"]:
+    font_path = os.path.join(font_dir, font_name)
+
+    if not os.path.isfile(font_path):
+        print(f"Downloading {font_name}")
+        try:
+            response = requests.get(f"{font_url}/{font_name}")
+            response.raise_for_status()  # Raise an exception if the request fails
+
+            with open(font_path, 'wb') as font_file:
+                font_file.write(response.content)
+
+            print(f"Successfully downloaded {font_name}")
+        except requests.exceptions.RequestException as e:
+            print(f"Error getting {font_name} from {font_url}: {e}")
 
 # Initialize lists to store names by gender
 males = []
@@ -83,8 +107,8 @@ for assignments in schedule:
     print(f"Saturday: {saturday_pair[0]} and {saturday_pair[1]}\n")
 
 # Define fonts and text colors  
-font = ImageFont.truetype("opensans/fonts/ttf/OpenSans-Regular.ttf", size=20)
-bold_font = ImageFont.truetype("opensans/fonts/ttf/OpenSans-Bold.ttf", size=20)
+font = ImageFont.truetype(os.path.join(font_dir, "OpenSans-Regular.ttf"), size=20)
+bold_font = ImageFont.truetype(os.path.join(font_dir, "OpenSans-Bold.ttf"), size=20)
 text_color = (0, 0, 0)
 
 # Calculate the required image height based on the number of weeks and text size
