@@ -70,7 +70,12 @@ current_date = datetime.now()
 next_week_start = current_date + timedelta(days=(7 - current_date.weekday()) % 7)
 start_year = next_week_start.year # 2023
 print("Which week do want to start on?")
-start_week = int(input("Enter start week [default: next week] ") or next_week_start.isocalendar()[1])     # Change this to the desired start week
+start_week = int(input("Enter start week [default: next week] ") or next_week_start.isocalendar()[1]) 
+
+while start_week > 52: 
+    print("Jij joch, dat kan helemaal niet! Probeer opnieuw")
+    start_week = int(input("Enter start week [default: next week] ") or next_week_start.isocalendar()[1])
+
 
 # Determine the number of weeks you want to schedule
 num_weeks = 4  # Change this to the desired number of weeks
@@ -78,7 +83,7 @@ num_weeks = 4  # Change this to the desired number of weeks
 # Create pairs of men and pairs of women while ensuring everyone gets a turn
 male_pairs = create_pairs(males)
 female_pairs = create_pairs(females)
-pairs = male_pairs + female_pairs
+pairs = male_pairs + female_pairs 
 
 # Initialize a list to store the schedule
 schedule = []
