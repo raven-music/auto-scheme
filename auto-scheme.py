@@ -69,16 +69,16 @@ with open(sys.argv[1] if len(sys.argv) > 1 else 'sample.csv', mode='r', newline=
 current_date = datetime.now()
 next_week_start = current_date + timedelta(days=(7 - current_date.weekday()) % 7)
 start_year = next_week_start.year # 2023
-print("Which week do want to start on?")
-start_week = int(input("Enter start week [default: next week] ") or next_week_start.isocalendar()[1]) 
+print("Em que semana você quer começar?")
+start_week = int(input("Insira a semana de início [padrão: próxima semana] ") or next_week_start.isocalendar()[1]) 
 
 while start_week > 52: 
-    print("Jij joch, dat kan helemaal niet! Probeer opnieuw")
-    start_week = int(input("Enter start week [default: next week] ") or next_week_start.isocalendar()[1])
-
-
+    print("Você garoto, isso não é possível! Tente novamente")
+    start_week = int(input("Insira a semana de início [padrão: próxima semana] ") or next_week_start.isocalendar()[1])
+    
 # Determine the number of weeks you want to schedule
 num_weeks = 4  # Change this to the desired number of weeks
+
 
 # Create pairs of men and pairs of women while ensuring everyone gets a turn
 male_pairs = create_pairs(males)
