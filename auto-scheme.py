@@ -9,11 +9,18 @@ from PIL import Image, ImageDraw, ImageFont
 
 # Function to get the start date of a week based on the week number and year
 def start_date_of_week(year, week_number):
-    return datetime.strptime(f'{year}-W{week_number}-1', "%Y-W%U-%w").date()
+    if week_number <= 52:
+        return datetime.strptime(f'{year}-W{week_number}-1', "%Y-W%U-%w").date()
+    else:
+        # Handle week numbers greater than 52 by wrapping to the next year
+        next_year = year + 1
+        week_number -= 52
+        return datetime.strptime(f'{next_year}-W{week_number}-1', "%Y-W%U-%w").date()
 
 # Function to get the end date of a week based on the week number and year
 def end_date_of_week(year, week_number):
-    return start_date_of_week(year, week_number) + timedelta(days=6)
+    start_date = start_date_of_week(year, week_number)
+    return start_date + timedelta(days=6)
 
 # Function to create pairs of two people while ensuring everyone gets a turn
 def create_pairs(names):
